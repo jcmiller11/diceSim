@@ -1,0 +1,17 @@
+<!doctypehtml><meta charset=UTF-8><meta content="width=device-width,initial-scale=1"name=viewport><meta content="ie=edge"http-equiv=X-UA-Compatible><link href=favicon.png rel="shortcut icon"type=image/png><link href=favicon.png rel="shortcut icon"sizes=196x196><link href=favicon.png rel=apple-touch-icon><title>Multidice Simulator</title><link href="https://fonts.googleapis.com/css?family=Press+Start+2P"rel=stylesheet><link href=https://unpkg.com/nes.css/css/nes.min.css rel=stylesheet><link href=./style.css rel=stylesheet><section class="nes-container with-title"><h2 class=title>Multidice Simulator</h2><div><label><input class=nes-radio name=whichDie type=radio value=2> <span>D2</span></label> <label><input class=nes-radio name=whichDie type=radio value=4> <span>D4</span></label> <label><input class=nes-radio name=whichDie type=radio value=6> <span>D6</span></label> <label><input class=nes-radio name=whichDie type=radio value=8> <span>D8</span></label> <label><input class=nes-radio name=whichDie type=radio value=10> <span>D10</span></label> <label><input class=nes-radio name=whichDie type=radio value=12> <span>D12</span></label> <label><input class=nes-radio name=whichDie type=radio value=20 checked> <span>D20</span></label> <label><input class=nes-radio name=whichDie type=radio value=100> <span>D100</span></label></div><div class=containers><div class="nes-container with-title is-centered"><p class=title>Number Of Dice<div><button class=nes-btn onclick=fewerDice() type=button>&lt;</button> <span id=numberOfDice>3</span> <button class=nes-btn onclick=moreDice() type=button>></button></div></div></div><div><button class="nes-btn is-primary"onclick=rollButtonClicked() type=button>Roll!</button></div><br><div><canvas id=myChart></canvas></div></section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>const maxDice=20;const minDice=1;let ctx=document.getElementById('myChart').getContext('2d');let chart=new Chart(ctx);let selectedNumberOfDice=1;let numberOfDiceSpan=document.getElementById("numberOfDice");numberOfDiceSpan.textContent=selectedNumberOfDice;function rollDie(faces){return Math.floor(Math.random()*faces)+1}
+function rollDice(faces,dice){let sum=0;for(let i=0;i<dice;i++){sum+=rollDie(faces)}
+return sum}
+function doSimulation(faces,dice,rolls){chart.destroy();const maxValue=faces*dice+1;const minValue=dice;let result=new Array(maxValue).fill(0);for(let i=0;i<rolls;i++){result[rollDice(faces,dice)]++}
+labels=Array.from(result.keys());labels.splice(0,minValue);result.splice(0,minValue);chart=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:"Percentage",backgroundColor:'rgb(188, 57, 78)',data:result.map(x=>100*x/rolls),}]},options:{barThickness:'flex',scales:{yAxes:[{ticks:{min:0,beginAtZero:!0}}]},legend:{display:!1},tooltips:{callbacks:{label:(item)=>`${item.yLabel}%`,},},}})}
+function rollButtonClicked(){let radios=document.getElementsByName('whichDie');let whichDie=20;for(var i=0,length=radios.length;i<length;i++)
+{if(radios[i].checked)
+{whichDie=radios[i].value;break}}
+doSimulation(whichDie,selectedNumberOfDice,100000)}
+function moreDice(){if(selectedNumberOfDice<maxDice){selectedNumberOfDice++}
+numberOfDiceSpan.textContent=selectedNumberOfDice}
+function fewerDice(){if(selectedNumberOfDice>minDice){selectedNumberOfDice--}
+numberOfDiceSpan.textContent=selectedNumberOfDice}
+rollButtonClicked()
+</script></body></html>
