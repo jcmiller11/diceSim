@@ -43,24 +43,25 @@
 			return newDeck;
 		}
 		curDeck = createDeck();
+		function getCardNum() {
+			return curDeck.length.toString()+" cards left";
+		}
 		function clearCard() {
-				document.getElementById("nameholder").innerHTML = "";
+				document.getElementById("nameholder").innerHTML = getCardNum();
 				document.getElementById("cardholder").innerHTML = "<div class='card'></div>";
 		}
 		function drawCard() {
-			if(curDeck.length==0) {
-				clearCard();
-				alert("Out of cards, please reshuffle!")
-			} else {
+			if(curDeck.length>0) {
 				theCard = curDeck.pop();
-				document.getElementById("nameholder").innerHTML = theCard[0];
+				document.getElementById("nameholder").innerHTML = theCard[0]+" "+getCardNum();
 				document.getElementById("cardholder").innerHTML = theCard[1];
 			}
 		}
 		function reshuffle() {
-			clearCard();
 			curDeck = createDeck(document.getElementById("jokers").checked);
+			clearCard();
 		}
+		clearCard();
 	</script>
 </body>
 </html>
