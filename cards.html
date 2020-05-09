@@ -47,7 +47,23 @@
 			suits = ["Spades","Clubs","Hearts","Diamonds"];
 			suits.forEach(function(suit) {
 			    values.forEach(function(val) {
-						newDeck.push([val+" of "+suit,"<div class='card "+suit.toLowerCase()+"'><span class='value'>"+val+"</span></div>"]);
+						switch(val) {
+						  case "J":
+						    cardname = "Jack";
+						    break;
+						  case "Q":
+						    cardname = "Queen";
+						    break;
+						  case "K":
+						    cardname = "King";
+						    break;
+						  case "A":
+						    cardname = "Ace";
+						    break;
+						  default:
+						    cardname = val;
+						}
+						newDeck.push([cardname+" of "+suit,"<div class='card "+suit.toLowerCase()+"'><span class='value'>"+val+"</span></div>"]);
 					});
 			});
 			if(jokers) {
