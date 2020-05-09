@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.card {border:solid 2px;width:2.5em;height:3.5em;border-radius:0.2em;border-color:#000;margin:0.5em;position:relative;align:center;white-space: pre;}
+		.hearts, .diamonds {color:#f00;}
+		.spades::before {content:"\2660\a\0020\0020\0020\0020";}
+		.hearts::before {content:"\2665\a\0020\0020\0020\0020";}
+		.diamonds::before {content:"\2666\a\0020\0020\0020\0020";}
+		.clubs::before {content:"\2663\a\0020\0020\0020\0020";}
+		.joker::before {content:"J\a\0020\0020\0020\0020J";}
+		.joker::after {content:"J";}
+		.spades::after {content:"\2660";}
+		.hearts::after {content:"\2665";}
+		.diamonds::after {content:"\2666";}
+		.clubs::after {content:"\2663";}
+		.spades::after, .hearts::after, .diamonds::after, .clubs::after, .joker::after {display: inline-block;transform:rotate(180deg);bottom:0;right:0em;position:absolute;}
+		button {font-size:16pt;margin-right:1em;}
+		#nameholder {height:1em;}
+	</style>
+</head>
+<body>
+	<div id="cardholder"><div class="card"></div></div><br/>
+	<div id="nameholder"></div><br/>
+	<button onClick="drawCard()">Draw A Card</button><button onClick="reshuffle()">Reshuffle</button><br/>
+	<input type="checkbox" id="jokers" name="jokers">
+	<label for="jokers">Jokers? (only added on reshuffle)</label>
+	<script type="text/javascript">
+		function createDeck(jokers = false) {
+			newDeck = [];
+			values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
+			suits = ["Spades","Clubs","Hearts","Diamonds"];
+			suits.forEach(function(suit) {
+			    values.forEach(function(val) {
+						newDeck.push([val+" of "+suit,"<div class='card "+suit.toLowerCase()+"'>"+val+"</div>"]);
+					});
+			});
+			if(jokers) {
+				newDeck.push(["Joker","<div class='card joker'></div>"]);
+				newDeck.push(["Joker","<div class='card joker'></div>"]);
+			}
+			newDeck.sort(() => Math.random() - 0.5);
+			return newDeck;
+		}
+		curDeck = createDeck();
+		function clearCard() {
+				document.getElementById("nameholder").innerHTML = "";
+				document.getElementById("cardholder").innerHTML = "<div class='card'></div>";
+		}
+		function drawCard() {
+			if(curDeck.length==0) {
+				clearCard();
+				alert("Out of cards, please reshuffle!")
+			} else {
+				theCard = curDeck.pop();
+				document.getElementById("nameholder").innerHTML = theCard[0];
+				document.getElementById("cardholder").innerHTML = theCard[1];
+			}
+		}
+		function reshuffle() {
+			clearCard();
+			curDeck = createDeck(document.getElementById("jokers").checked);
+		}
+	</script>
+</body>
+</html>
