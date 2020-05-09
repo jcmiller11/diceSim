@@ -31,6 +31,13 @@
 		}
 		#nameholder {height:1em;}
 		#numholder {height:1em;}
+		input[type='number'] {
+		    -webkit-appearance:none;
+		    font-size:1em;
+		    background:white;
+		    border-radius:5px;
+		    border:2px solid #555;
+		}
 	</style>
 </head>
 <body>
@@ -38,37 +45,41 @@
 	<div id="nameholder"></div><br/>
 	<div id="numholder"></div><br/>
 	<button onClick="drawCard()">Draw A Card</button><button onClick="reshuffle()">Reshuffle</button><br/>
-	<input type="checkbox" id="jokers" name="jokers">
-	<label for="jokers">Jokers? (only added on reshuffle)</label>
+	<input type="checkbox" id="jokers" name="jokers"/>
+	<label for="jokers">Jokers? (only added on reshuffle)</label><br/>
+	<label for="quantity">Number of decks:</label>
+	<input type="number" id="quantity" name="quantity" min="1" max="5" value="1"/>
 	<script type="text/javascript">
 		function createDeck(jokers = false) {
 			newDeck = [];
 			values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 			suits = ["Spades","Clubs","Hearts","Diamonds"];
-			suits.forEach(function(suit) {
-			    values.forEach(function(val) {
-						switch(val) {
-						  case "J":
-						    cardname = "Jack";
-						    break;
-						  case "Q":
-						    cardname = "Queen";
-						    break;
-						  case "K":
-						    cardname = "King";
-						    break;
-						  case "A":
-						    cardname = "Ace";
-						    break;
-						  default:
-						    cardname = val;
-						}
-						newDeck.push([cardname+" of "+suit,"<div class='card "+suit.toLowerCase()+"'><span class='value'>"+val+"</span></div>"]);
-					});
-			});
-			if(jokers) {
-				newDeck.push(["Joker","<div class='card joker'><span class='value'>&#65533;</span></div>"]);
-				newDeck.push(["Joker","<div class='card joker'><span class='value'>&#65533;</span></div>"]);
+			for (i = 0; i < document.getElementById("quantity").value; i++) { 
+				suits.forEach(function(suit) {
+				    values.forEach(function(val) {
+							switch(val) {
+							  case "J":
+							    cardname = "Jack";
+							    break;
+							  case "Q":
+							    cardname = "Queen";
+							    break;
+							  case "K":
+							    cardname = "King";
+							    break;
+							  case "A":
+							    cardname = "Ace";
+							    break;
+							  default:
+							    cardname = val;
+							}
+							newDeck.push([cardname+" of "+suit,"<div class='card "+suit.toLowerCase()+"'><span class='value'>"+val+"</span></div>"]);
+						});
+				});
+				if(jokers) {
+					newDeck.push(["Joker","<div class='card joker'><span class='value'>&#65533;</span></div>"]);
+					newDeck.push(["Joker","<div class='card joker'><span class='value'>&#65533;</span></div>"]);
+				}
 			}
 			for(let i = newDeck.length -1;i>0;i--) {
 			  const j = Math.floor(Math.random() * i)
