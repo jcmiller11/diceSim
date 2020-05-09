@@ -2,7 +2,8 @@
 <html>
 <head>
 	<style>
-		.card {border:solid 2px;width:2.5em;height:3.5em;border-radius:0.2em;border-color:#000;margin:0.5em;position:relative;align:center;white-space: pre;}
+		body {font-size:2.5em;text-align:center;font-family:sans-serif;}
+		.card {border:solid 2px;width:2.5em;height:3.5em;border-radius:0.2em;border-color:#000;margin:0.5em;position:relative;text-align:left;white-space:pre;margin-left:auto;margin-right:auto;font-family:serif;}
 		.hearts, .diamonds {color:#f00;}
 		.spades::before {content:"\2660\a\0020\0020\0020\0020";}
 		.hearts::before {content:"\2665\a\0020\0020\0020\0020";}
@@ -15,7 +16,18 @@
 		.diamonds::after {content:"\2666";}
 		.clubs::after {content:"\2663";}
 		.spades::after, .hearts::after, .diamonds::after, .clubs::after, .joker::after {display: inline-block;transform:rotate(180deg);bottom:0;right:0em;position:absolute;}
-		button {font-size:16pt;margin-right:1em;}
+		button {font-size:1em;margin-right:1em;}
+		input[type='checkbox'] {
+		    -webkit-appearance:none;
+		    width:2em;
+		    height:2em;
+		    background:white;
+		    border-radius:5px;
+		    border:2px solid #555;
+		}
+		input[type='checkbox']:checked {
+		    background: #333;
+		}
 		#nameholder {height:1em;}
 		#numholder {height:1em;}
 	</style>
