@@ -41,7 +41,10 @@
 			} else {
 				delimiter = ",";
 			}
-			textarea.value += Math.round(x) + "," + Math.round(y) + delimiter;
+			if (textarea.value!="") {
+				textarea.value+=delimiter;
+			}
+			textarea.value += Math.round(x) + "," + Math.round(y);
 			textarea.scrollTop = textarea.scrollHeight;
 		}
 		function clearText() {
