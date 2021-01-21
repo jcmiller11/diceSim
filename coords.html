@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Image Coordinate Clicker</title>
+</head>
+<body>
+	<textarea id="coords" name="coords" rows="10" cols="40" readonly></textarea>
+  <input type="file" id="imageLoader" name="imageLoader"/>
+	<canvas id="imageCanvas" width=0 height=0></canvas><br/>
+  <script>
+		var imageLoader = document.getElementById('imageLoader');
+		imageLoader.addEventListener('change', handleImage, false);
+		var canvas = document.getElementById('imageCanvas');
+		var ctx = canvas.getContext('2d');
+		var textarea = document.getElementById('coords');
+		function handleImage(e){
+		    let reader = new FileReader();
+		    reader.onload = function(event){
+		        let img = new Image();
+		        img.onload = function(){
+		            canvas.width = img.width;
+		            canvas.height = img.height;
+		            ctx.drawImage(img,0,0);
+		        }
+		        img.src = event.target.result;
+		    }
+		    reader.readAsDataURL(e.target.files[0]);     
+		}
+		function getMousePosition(canvas, event) { 
+		    let rect = canvas.getBoundingClientRect(); 
+		    let x = event.clientX - rect.left; 
+		    let y = event.clientY - rect.top; 
+				textarea.value += x + "," + y +"\n";
+				textarea.scrollTop = textarea.scrollHeight;
+		}     
+    canvas.addEventListener("mousedown", function(e) 
+    { 
+        getMousePosition(canvas, e); 
+    }); 
+  </script>
+</body>
+</html>
