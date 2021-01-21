@@ -5,34 +5,48 @@
 </head>
 <body>
 	<textarea id="coords" name="coords" rows="10" cols="40" readonly></textarea>
-  <input type="file" id="imageLoader" name="imageLoader"/>
-	<canvas id="imageCanvas" width=0 height=0></canvas><br/>
+  <button type="button" onClick="clearText()">Clear</button>
+  <input type="file" id="imageLoader" name="imageLoader"/><br/>
+	<input type="radio" id="linebreak" name="delimiter" value="linebreak" checked>
+	<label for="linebreak">Line break</label><br>
+	<input type="radio" id="comma" name="delimiter" value="comma">
+	<label for="comma">Comma</label><br>
+	<canvas id="imageCanvas" width=0 height=0 style="border:1px solid"></canvas>
   <script>
 		var imageLoader = document.getElementById('imageLoader');
 		imageLoader.addEventListener('change', handleImage, false);
 		var canvas = document.getElementById('imageCanvas');
 		var ctx = canvas.getContext('2d');
 		var textarea = document.getElementById('coords');
+		var radios = document.getElementsByName('delimiter');
 		function handleImage(e){
-		    let reader = new FileReader();
-		    reader.onload = function(event){
-		        let img = new Image();
-		        img.onload = function(){
-		            canvas.width = img.width;
-		            canvas.height = img.height;
-		            ctx.drawImage(img,0,0);
-		        }
-		        img.src = event.target.result;
+		  let reader = new FileReader();
+		  reader.onload = function(event){
+		    let img = new Image();
+		    img.onload = function(){
+		        canvas.width = img.width;
+		        canvas.height = img.height;
+		        ctx.drawImage(img,0,0);
 		    }
-		    reader.readAsDataURL(e.target.files[0]);     
+		    img.src = event.target.result;
+		  }
+		  reader.readAsDataURL(e.target.files[0]);     
 		}
 		function getMousePosition(canvas, event) { 
-		    let rect = canvas.getBoundingClientRect(); 
-		    let x = event.clientX - rect.left; 
-		    let y = event.clientY - rect.top; 
-				textarea.value += x + "," + y +"\n";
-				textarea.scrollTop = textarea.scrollHeight;
-		}     
+		  let rect = canvas.getBoundingClientRect(); 
+		  let x = event.clientX - rect.left; 
+		  let y = event.clientY - rect.top; 
+			if(radios[0].checked) {
+			  delimiter = "\n";
+			} else {
+				delimiter = ",";
+			}
+			textarea.value += Math.round(x) + "," + Math.round(y) + delimiter;
+			textarea.scrollTop = textarea.scrollHeight;
+		}
+		function clearText() {
+			textarea.value = "";
+		}
     canvas.addEventListener("mousedown", function(e) 
     { 
         getMousePosition(canvas, e); 
